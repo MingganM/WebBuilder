@@ -1,0 +1,25 @@
+.nav{
+    background-color: $secondary;
+
+    &__ul{
+        list-style-type: none;
+        display: flex;
+        justify-content: center;
+    }
+    &__li{
+
+    }
+    &__link{
+        font-size: 1.2rem;
+        text-decoration: none;
+        padding: 1rem;
+        display: block;
+        background-color: transparent;
+        color: $white;
+
+        &:hover{
+            background-color: $white;
+            color: $secondary;
+        }
+    }
+}

@@ -1,0 +1,25 @@
+List for HTML elements:
+[
+	{
+		class: "",
+		tag: "",
+		children: [
+			{class:"",tag:"",children:[],styles: {}}
+		],
+		styles: {},
+		
+	}
+]
+For Styles:
+{
+	className: {
+		color: "red" //just an example
+	},
+}
+
+function createHTMLElement(obj){
+	return React.createElement("obj.tag",null, obj.children.length > 0 ? mapObjects(obj.children, createHTMLElement) : null);
+}
+function mapObjects(elemList, callBack) {
+	return elemList.map(callBack);
+}

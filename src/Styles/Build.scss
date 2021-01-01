@@ -1,0 +1,81 @@
+.Build{
+    display: flex;
+    height: 100vh;
+
+    // IN COMMON:
+    .markup__title, .buildStyle__title{
+        font-size: 1.4rem;
+        text-align: center;
+        padding: 0.5rem;
+        margin:0.5rem auto;
+        color: $black;
+        border-bottom: 3px solid $black;
+    }
+    .markup, .display, .buildStyle{
+        overflow: scroll;
+        
+        &::-webkit-scrollbar-track{
+            background: transparent;
+        }
+        &::-webkit-scrollbar{
+            width:5px;
+        }
+        &::-webkit-scrollbar-thumb{
+            background: $primary;
+            border-radius: 20px;
+            width:5px;
+        }
+    }
+    // THE REST:
+    
+    .markup{
+        flex: 1.4;
+        border-right: 1px solid grey;
+        
+        &__preview{
+            padding:0.2rem;
+
+        }
+        .previewElement{
+            color: $black;
+            font-size: 1.1rem;
+            cursor: grab;
+            &:active{
+                user-select: none;
+                cursor: grabbing;
+            }
+
+            & .previewElement{
+                border-left: 1px solid $black;
+                margin-left: 0 0.2rem;
+                padding: 0 0.3rem;
+            }
+        }
+    }
+    
+    .display{
+        flex: 3;
+        &__operations{
+            padding: 0.9rem 0.5rem;
+            border-bottom: 3px solid $black;
+            display: flex;
+        }
+        &__operation{
+            font-size: 1.2rem;
+            display: block;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            &:nth-child(1){color: $green;}
+            &:nth-child(2){color: $red;}
+        }
+    }
+
+    .buildStyle{
+        flex: 1;
+        border-left: 1px solid grey;
+    }
+}
+// FOR DRAGGING PURPOSE :P :
+.draggedOver{
+    border-bottom: 2px solid $primary;
+}

@@ -1,0 +1,20 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+$primary: #6155a6;
+$secondary: #1a6ca3;
+$red: #cc184b;
+$linkColor: #3375cc;
+$white: #f8f8f8;
+$green: rgb(0, 172, 66);
+$black: rgb(49, 49, 49);
+
+@import "./Styles/nav.scss";
+@import "./Styles/Build.scss";
+@import "./Styles/AddElement.scss";

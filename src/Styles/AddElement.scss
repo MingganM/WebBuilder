@@ -1,0 +1,73 @@
+.addElement{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: $white;
+    box-shadow: 10px 10px 5px grey;
+    padding: 1.5rem;
+    border-radius: 0.2rem;
+    color: $black;
+    transition: transform 0.3s;
+
+    input, textarea{
+        display: block;
+        border: none;
+        border-bottom: 2px solid $black;
+        margin: 0.5rem 0;
+        width: 100%;
+        resize: none;
+        font-size: 1.2rem;
+        background: transparent;
+        padding: 0.2rem 0.5rem;
+        
+        &:focus{
+            outline: none;
+            border-bottom: 2px solid $green;
+        }
+    }
+    .elemClass{
+
+    }
+    .elemTag{
+
+    }
+    .elemText{
+
+    }
+
+    #elemText{
+        display:block;
+        height: 8rem;
+    }
+
+    &__btn{
+        border: 2px solid $green;
+        color: $green;
+        font-size: 1.2rem;
+        padding: 0.5rem 0.8rem;
+        transition: background-color 0.3s, color 0.3s;
+        cursor: pointer;
+        display: block;
+        margin: auto;
+
+        &:focus, &:hover{
+            outline: none;
+            background-color: $green;
+            color: $white;
+        }
+    }
+
+    &--close{
+        color: $red;
+        border-color: $red;
+        margin-right: 0;
+        
+        &:hover{
+            background-color: $red;
+        }
+    }
+}
+.addElement--show{
+    transform: translate(-50%, -50%) scale(1);
+}
