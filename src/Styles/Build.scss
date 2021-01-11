@@ -37,6 +37,7 @@
 
         }
         .previewElement{
+            font-weight: 300;
             color: $black;
             font-size: 1.1rem;
             cursor: grab;
@@ -55,27 +56,50 @@
     
     .display{
         flex: 3;
+        overflow: scroll;
+
+
         &__operations{
             padding: 0.9rem 0.5rem;
             border-bottom: 3px solid $black;
             display: flex;
+            width: 100%;
         }
         &__operation{
+            background-color: transparent;
+            border: none;
             font-size: 1.2rem;
             display: block;
             margin: 0 0.5rem;
+            color: $black;
+
             cursor: pointer;
-            &:nth-child(1){color: $green;}
-            &:nth-child(2){color: $red;}
+            &:nth-child(1):hover{color: $green;}
+            &:nth-child(2):hover{color: $red;}
+
+            & svg{
+                position: relative;
+                z-index: -1;
+            }
         }
     }
 
     .buildStyle{
         flex: 1;
         border-left: 1px solid grey;
+
+        &__selectedClass{
+            background-color: grey;
+            display: block;
+            text-align: center;
+            color: $white;
+            padding: 0.4rem;
+        }
     }
 }
 // FOR DRAGGING PURPOSE :P :
 .draggedOver{
     border-bottom: 2px solid $primary;
+    font-weight: 400 !important;
+    color: $primary !important;
 }

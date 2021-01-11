@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { searchForClassParent,
+         changeChildrenBranch,
+         addElementInRoot,
+         findObjViaClass } from "./Components/helpingFunctions";
 
 export const appContext = React.createContext();
 export const AppConsumer = appContext.Consumer;
@@ -42,8 +46,27 @@ export default class Context extends Component {
                 children: []
             }
         ],
-        styles: {}
+        styles: {},
+        cursorType: 'move',
+        selectedClass: "None"
     };
+
+    setCursor = (e) => {
+        const { target : {dataset: { value }}} = e;
+        if(value){
+            this.setState({
+                cursorType: value
+            });
+        }
+    }
+
+    setSelectedClass = (e) => {
+        e.stopPropagation();
+        const { target: { textContent } } = e;
+        this.setState({
+            selectedClass: textContent
+        });
+    }
 
     createElement = (elemClass, elemTag, elemText) => {
         const { elemKey } = this.state;
@@ -64,66 +87,150 @@ export default class Context extends Component {
     }
 
     addElementAsChild = (target, branch, elem) => {
-        const { markup } = this.state;
-        const targetTextContent = target.textContent;
-        const elemTextContent= elem.textContent;
+        const { markup, cursorType } = this.state;
+        if(cursorType !== 'move') return;
+
+        const targetClassName = target.dataset.classname;
+        const elemClassName= elem.dataset.classname;
+
+        if(targetClassName === elemClassName) return; //doesn't allow target to be dropped on itself
+        if(elem.parentElement.dataset.classname === targetClassName) return; //doesn't allow target to be dropped on its parent
         
-        const modifiedBranch = branch === "main" ? targetTextContent : branch;
+        const modifiedBranch = branch === "main" ? targetClassName : branch;
         const targetElementRoot = markup.find(obj => obj.class === modifiedBranch);
+
+        // THIS PIECE OF CODE WILL FIND ELEMENT THAT IS TO BE DROPPED AS CHILD:
         
-        let foundElem = markup.find(obj => obj.class === elemTextContent);
+        const { dataset: { branch: elemBranch } } = elem;
+        
+        // checks if element is from main branch:
+        let foundElem = elemBranch === "main" ? markup : null;
 
         if(!foundElem){ //if element is not from a main branch
-            const { dataset: { branch } } = elem;
-            foundElem = searchForClassParent(markup.find(obj => obj.class === branch), elemTextContent)
+            foundElem = searchForClassParent(findObjViaClass(markup, elemBranch), elemClassName)
         }
-        console.log(foundElem);
 
-        function searchForClassParent(branch, className){
-            const { children } = branch;
-            let resultChild;
-            
-            if(children.length > 0){
-                children.forEach(obj => {
-                    if(obj.class === className) resultChild = branch;
-                });
-                if(!resultChild){
-                    for(let i = 0; i < children.length; i++){
-                        resultChild = searchForClassParent(children[i], className);
-                        if(resultChild) break;
-                    }
+        // END OF ELEM THAT IS TO BE DROPPED AS A CHILD
+
+        function deleteFoundElement( root ){ //root = foundElement
+            if(!root) return;
+
+            if(root.children) {
+                root.children = root.children.filter(obj => obj.class !== elemClassName);
+                return;
+            }
+
+            root = root.filter(obj => obj.class !== elemClassName);
+            return root;
+        }
+        
+        const newElemAsChild = { ...findObjViaClass(foundElem, elemClassName), branch: modifiedBranch};
+
+        changeChildrenBranch(newElemAsChild);
+
+        addElementInRoot(targetClassName, targetElementRoot, newElemAsChild);
+
+        const deletedElem = deleteFoundElement( foundElem );
+        
+        this.setState({
+            markup: deletedElem ? deletedElem : [...markup]
+        })
+    }
+
+    handleNumberChange = (e) => {
+        const { selectedClass, styles } = this.state;
+        let {target : { value },
+             target : { dataset : { property, func, unit } }} = e;
+        
+        if( func ){
+            value = `${func}(${value}${unit})`;
+        }else{
+            value = `${value}${unit}`;
+        }
+
+        function findEndIndex(string, startIndex){
+            let resultIndex;
+            for(let i = startIndex; i < string.length; i++){
+                if(string[i] === ")") {
+                    resultIndex = i + 1;
+                    break;
                 }
             }
+            return resultIndex;
+        }
+        function callBack(newSingleStyle){
+            const stylePropertyIndex = newSingleStyle[property].indexOf(func); 
+            const stylePropertyEndIndex = findEndIndex(newSingleStyle[property], stylePropertyIndex);
+            const existingStyleProperty = newSingleStyle[property].slice(stylePropertyIndex, stylePropertyEndIndex);
 
-            return resultChild;
+            if(newSingleStyle[property] && stylePropertyIndex !== -1) newSingleStyle[property] = newSingleStyle[property].replace(existingStyleProperty, value); 
+            else if(newSingleStyle[property] && func) newSingleStyle[property] += " " + value;
+            else newSingleStyle[property] = value;
         }
 
-        // addElementInRoot(targetTextContent, elementRoot, newElemAsChild);
-        const newElemAsChild = { ...foundElem, branch: modifiedBranch};
+        this.registerInputToState(e, value, callBack);
+    }
+
+    handleStyleCheck = (e) => {
+        let { target: { checked, dataset: { value } } } = e;
+    
+        if(!checked) value = ""; 
         
-        
-        function addElementInRoot(className, elementRoot, elemAsChild){
-            if(elementRoot.class === className){
-                elementRoot.children.push(elemAsChild);
-            }
-            console.log(elementRoot, className, elemAsChild)
-            elementRoot.children.forEach(obj => {
-                // addElementInRoot(className, obj, elemAsChild)
-            });
+        this.registerInputToState(e, value);
+    }
+
+    registerInputToState = (e, extraVal, callBack) => {
+        const { selectedClass, styles } = this.state;
+        let {target : { value },
+             target : { dataset : { property } }} = e;
+    
+        if(typeof extraVal !== "undefined" && extraVal !== null) {
+            value = extraVal; 
         }
 
-        console.log(newElemAsChild);
-        console.log(elem);
-        
+        if(selectedClass === "None") return;
 
-        // const newMarkup = markup.map();
+        const newStyles = {
+            ...styles
+        };
+        
+        if(styles[selectedClass]){
+            let newSingleStyle = {
+                ...styles[selectedClass],
+            };
+    
+            if(callBack && newSingleStyle[property]) callBack(newSingleStyle); //will run function, to make this compatible with different types of input
+            else newSingleStyle[property] = value;
+            
+            newStyles[selectedClass] = newSingleStyle;
+        }
+        else{
+            newStyles[selectedClass] = {};
+            newStyles[selectedClass][property] = value;
+        }
+
+        this.setState({
+            styles: newStyles
+        });
+    }
+
+    handleGeneral = (e) => {
+        this.registerInputToState(e);
+    }
+    handleColor = (e) => {
+
     }
 
     render(){
         const value = {
             ...this.state,
             createElement: this.createElement,
-            addElementAsChild: this.addElementAsChild
+            addElementAsChild: this.addElementAsChild,
+            setCursor: this.setCursor,
+            setSelectedClass: this.setSelectedClass,
+            handleGeneral: this.handleGeneral,
+            handleStyleCheck: this.handleStyleCheck,
+            handleNumberChange: this.handleNumberChange
         }
         
         return (

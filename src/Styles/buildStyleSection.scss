@@ -1,0 +1,50 @@
+.hide{
+    display:none;
+}
+
+.buildStyleSection{
+    &__content{
+        border-bottom: 1px solid $primary;
+        padding: 0.5rem;
+    }
+
+    &__btn{
+        background: transparent;
+        display: block;
+        border: none;
+        width: 100%;
+        padding: 0.4rem 0;
+        border-bottom: 1px solid $primary;
+        cursor: pointer;
+    }
+    &__title{
+        display: flex;
+        justify-content: space-between;
+        margin: 0 1rem;
+        font-size: 1.3rem;
+        color: $primary;
+    }
+    // Single input for css
+    &__singleProperty{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        label{
+            margin: 0.3rem 0;
+        }
+        input{
+            &:only-of-type(text){
+                width: 100%;
+            }
+        }
+        select{
+            width: 100%;
+        }
+        option{
+            color: $white;
+            background-color: $primary;
+        }
+    }
+}
