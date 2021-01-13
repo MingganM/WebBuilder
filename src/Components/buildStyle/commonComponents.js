@@ -81,3 +81,23 @@ export function StyleInput(props){
             );
     }
 }
+
+export function setOperationUnit(setState){ //sets unit to px or %
+    return function(e){
+        const {target: { value }} = e;
+        setState({
+            unit: value
+        })
+    }
+}
+export function SetOperationElem({setState}){
+    return (
+        <div className="buildStyleSection__singleProperty">
+            <label>Operation Unit:</label>
+            <select onChange={setOperationUnit(setState)} className="buildStyleSection__select">
+                <option value="%">%</option>
+                <option value="px">px</option>
+            </select>
+        </div>
+    );
+}

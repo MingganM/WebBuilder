@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { searchForClassParent,
          changeChildrenBranch,
          addElementInRoot,
+         deleteFoundElement,
          findObjViaClass } from "./Components/helpingFunctions";
 
 export const appContext = React.createContext();
 export const AppConsumer = appContext.Consumer;
-
+// displayContainer
 export default class Context extends Component {
     state = {
         elemKey: 1000,
@@ -48,7 +49,10 @@ export default class Context extends Component {
         ],
         styles: {},
         cursorType: 'move',
-        selectedClass: "None"
+        selectedClass: {
+            classname: "None",
+            root: "None"
+        }
     };
 
     setCursor = (e) => {
@@ -60,11 +64,37 @@ export default class Context extends Component {
         }
     }
 
+    deleteElement = (e) => {
+        const { selectedClass, markup } = this.state;
+        
+        if(selectedClass.classname === "None") return;
+        
+        if(selectedClass.root === "main"){
+            this.setState({
+                markup: deleteFoundElement(markup, selectedClass.classname)
+            })
+        }
+        else {
+            let branch = findObjViaClass(markup, selectedClass.root);
+            deleteFoundElement(searchForClassParent(branch, selectedClass.classname), selectedClass.classname)
+            this.setState({
+                markup: [...this.state.markup]
+            })
+        }
+    }
+
     setSelectedClass = (e) => {
         e.stopPropagation();
-        const { target: { textContent } } = e;
+
+        const { target: { textContent },
+                target: {parentElement: {dataset: { branch }}}
+        } = e;
+        
         this.setState({
-            selectedClass: textContent
+            selectedClass: {
+                classname: textContent,
+                root: branch
+            }
         });
     }
 
@@ -111,18 +141,6 @@ export default class Context extends Component {
         }
 
         // END OF ELEM THAT IS TO BE DROPPED AS A CHILD
-
-        function deleteFoundElement( root ){ //root = foundElement
-            if(!root) return;
-
-            if(root.children) {
-                root.children = root.children.filter(obj => obj.class !== elemClassName);
-                return;
-            }
-
-            root = root.filter(obj => obj.class !== elemClassName);
-            return root;
-        }
         
         const newElemAsChild = { ...findObjViaClass(foundElem, elemClassName), branch: modifiedBranch};
 
@@ -130,7 +148,7 @@ export default class Context extends Component {
 
         addElementInRoot(targetClassName, targetElementRoot, newElemAsChild);
 
-        const deletedElem = deleteFoundElement( foundElem );
+        const deletedElem = deleteFoundElement( foundElem, elemClassName );
         
         this.setState({
             markup: deletedElem ? deletedElem : [...markup]
@@ -188,25 +206,25 @@ export default class Context extends Component {
             value = extraVal; 
         }
 
-        if(selectedClass === "None") return;
+        if(selectedClass.classname === "None") return;
 
         const newStyles = {
             ...styles
         };
         
-        if(styles[selectedClass]){
+        if(styles[selectedClass.classname]){
             let newSingleStyle = {
-                ...styles[selectedClass],
+                ...styles[selectedClass.classname],
             };
     
             if(callBack && newSingleStyle[property]) callBack(newSingleStyle); //will run function, to make this compatible with different types of input
             else newSingleStyle[property] = value;
             
-            newStyles[selectedClass] = newSingleStyle;
+            newStyles[selectedClass.classname] = newSingleStyle;
         }
         else{
-            newStyles[selectedClass] = {};
-            newStyles[selectedClass][property] = value;
+            newStyles[selectedClass.classname] = {};
+            newStyles[selectedClass.classname][property] = value;
         }
 
         this.setState({
@@ -216,9 +234,6 @@ export default class Context extends Component {
 
     handleGeneral = (e) => {
         this.registerInputToState(e);
-    }
-    handleColor = (e) => {
-
     }
 
     render(){
@@ -230,7 +245,8 @@ export default class Context extends Component {
             setSelectedClass: this.setSelectedClass,
             handleGeneral: this.handleGeneral,
             handleStyleCheck: this.handleStyleCheck,
-            handleNumberChange: this.handleNumberChange
+            handleNumberChange: this.handleNumberChange,
+            deleteElement: this.deleteElement
         }
         
         return (

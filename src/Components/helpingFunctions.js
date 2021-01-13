@@ -46,3 +46,15 @@ export function findObjViaClass(list, className){
     }
     return list.children.find(obj => obj.class === className)
 }
+
+export function deleteFoundElement( root, elemClassName ){ //root = foundElement
+    if(!root) return;
+
+    if(root.children) {
+        root.children = root.children.filter(obj => obj.class !== elemClassName);
+        return;
+    }
+
+    root = root.filter(obj => obj.class !== elemClassName);
+    return root;
+}

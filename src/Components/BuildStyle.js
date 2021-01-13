@@ -1,18 +1,23 @@
 import React, { useContext, useState } from 'react';
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { appContext } from "../Context";
 // Components:
 import Flexbox from "./buildStyle/Flexbox";
 import Transform from './buildStyle/Transform';
 import Fonts from "./buildStyle/Fonts";
 import General from './buildStyle/General';
+import Positions from './buildStyle/Positions';
+import Border from './buildStyle/Border';
+import Background from './buildStyle/Background';
 
 export default function BuildStyle() {
     const stateObject = {
         showFlexBox: false,
         showGeneral: false,
         showFonts: false,
-        showTransform: false
+        showTransform: false,
+        showPositions: false,
+        showBorder: false,
+        showBackground: false
     };
 
     const context = useContext(appContext);
@@ -21,7 +26,8 @@ export default function BuildStyle() {
             styles,
             handleStyleCheck,
             handleNumberChange,
-            handleGeneral } = context;
+            handleGeneral 
+        } = context;
     
     function toggleSectionsDisplay(section){
         return function(e){
@@ -38,11 +44,10 @@ export default function BuildStyle() {
     return (
         <form className="buildStyle">
             <h3 className="buildStyle__title">Styles</h3>
-            <span className="buildStyle__selectedClass">Selected: {selectedClass}</span>
+            <span className="buildStyle__selectedClass">Selected: {selectedClass.classname}</span>
 
             <Flexbox 
                 show={state.showFlexBox} 
-                icons={{FaArrowDown, FaArrowUp}}
                 toggleSectionsDisplay={toggleSectionsDisplay}
                 handleGeneral={handleGeneral}
                 handleStyleCheck={handleStyleCheck}
@@ -54,7 +59,6 @@ export default function BuildStyle() {
             />
             <Fonts
                 show={state.showFonts}
-                icons={{FaArrowDown, FaArrowUp}}
                 toggleSectionsDisplay={toggleSectionsDisplay}
                 handleGeneral={handleGeneral}
                 handleNumberChange={handleNumberChange}
@@ -65,6 +69,25 @@ export default function BuildStyle() {
                 handleGeneral={handleGeneral}
                 handleNumberChange={handleNumberChange}
             />
+            <Positions 
+                show={state.showPositions}
+                toggleSectionsDisplay={toggleSectionsDisplay}
+                handleGeneral={handleGeneral}
+                handleNumberChange={handleNumberChange}
+            />
+            <Border
+                show={state.showBorder}
+                toggleSectionsDisplay={toggleSectionsDisplay}
+                handleGeneral={handleGeneral}
+                handleNumberChange={handleNumberChange} 
+            />
+            <Background 
+                show={state.showBackground}
+                toggleSectionsDisplay={toggleSectionsDisplay}
+                handleGeneral={handleGeneral}
+                handleNumberChange={handleNumberChange} 
+            />
+
         </form>
     )
 }

@@ -8,6 +8,7 @@ import { AppConsumer } from "../Context";
 import AddElement from "./AddElement";
 
 export default function BuildDisplay() {
+   
     const myState = {
         showCreationForm: false
     };
@@ -31,7 +32,8 @@ export default function BuildDisplay() {
         <AppConsumer>
             {
                 value => {
-                    const {setCursor, createElement} = value;
+                    const {setCursor, createElement, deleteElement } = value;
+
                     return (
                         <div className="display">
                             <div onClick={setCursor} className="display__operations">
@@ -39,7 +41,7 @@ export default function BuildDisplay() {
                                     <FaPlus></FaPlus>
                                 </button>
                 
-                                <button className="display__operation">
+                                <button className="display__operation" onClick={deleteElement}>
                                     <FaTrash></FaTrash>
                                 </button>
 
@@ -52,9 +54,9 @@ export default function BuildDisplay() {
                                 </button>
                             </div>
                             
-                            <div className="display__container">
+                            <div id="displayContainer" className="display__container">
                                     {
-                                        displayElements(value)
+                                        displayElements(value, true)
                                     }
                             </div>
 
@@ -68,22 +70,31 @@ export default function BuildDisplay() {
     )
 }
 
-function displayElements(value){
+export function displayElements(value, applyStyles){
     const { markup, styles } = value;
 
     function createHTMLElement(obj){
         if(obj.tag === "input" || obj.tag === "img") return React.createElement(
             obj.tag,
+            applyStyles ?
             {
                 style: {...styles[obj.class]},
                 key: obj.key
+            } : {
+               key: obj.key,
+               class: obj.class.slice(1)
             }
         );
 
         return React.createElement(
-            obj.tag, {
-            style: {...styles[obj.class]},
-            key: obj.key
+            obj.tag, 
+            applyStyles ?
+            {
+                style: {...styles[obj.class]},
+                key: obj.key
+            } : {
+               key: obj.key,
+               class: obj.class.slice(1)
             },
             obj.text,
             obj.children.length > 0 ? mapObjects(obj.children, createHTMLElement) : null

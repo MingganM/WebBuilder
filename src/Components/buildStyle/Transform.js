@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { HeadingButton, StyleInput } from "./commonComponents";
+import { HeadingButton, StyleInput, SetOperationElem } from "./commonComponents";
 
 export default function Transform(props) {
     const { toggleSectionsDisplay,
@@ -7,13 +7,6 @@ export default function Transform(props) {
             handleNumberChange } = props;
 
     const [state, setState] = useState({unit: "%"});
-
-    function setOperationUnit(e){ //sets unit to px or %
-        const {target: { value }} = e;
-        setState({
-            unit: value
-        })
-    }
 
     return (
         <div className="buildStyleSection">
@@ -24,13 +17,9 @@ export default function Transform(props) {
             />
 
             <div className={(show ? "" : "hide") + " buildStyleSection__content"}>
-                <div className="buildStyleSection__singleProperty">
-                    <label>Operation Unit:</label>
-                    <select onChange={setOperationUnit} data-value="" data-property="" className="buildStyleSection__select">
-                        <option value="%">%</option>
-                        <option value="px">px</option>
-                    </select>
-                </div>
+                <SetOperationElem 
+                    setState={setState}
+                />                
 
                 {/* TRANSLATE: X AND Y */}
                 <StyleInput 

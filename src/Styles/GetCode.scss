@@ -1,0 +1,36 @@
+.getCode{
+    .hiddenElements{
+        display: none;
+    }
+    
+    .showCode{
+        display: flex;
+        justify-content: center;
+
+        &__box{
+            flex: 0 0 calc(49% - 1rem);
+            margin: 1rem;
+        }
+        &__code{
+            background-color: $black;
+            color: $white;
+            padding: 1rem; 
+            border-radius: 0.2rem;
+            font-size: 1.05rem;
+        }
+        &__btn{
+            background-color: transparent;
+            border: 1px solid $black;
+            padding: 0.2rem;
+            font-size: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.2rem;
+        }
+    }
+
+    &__sectionTitle{
+        font-weight: 500;
+        color: $primary;
+        margin: 0.5rem 0;
+    }
+}

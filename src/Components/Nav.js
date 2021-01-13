@@ -16,6 +16,10 @@ export default function Nav(){
             <li className="nav__li">
                 <Link className="nav__link" to="/Docs">Docs</Link>
             </li>
+
+            <li className="nav__li">
+                <Link className="nav__link" to="/GetCode">GetCode</Link>
+            </li>
         </ul>
     </nav>
     );

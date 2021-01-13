@@ -7,6 +7,11 @@ body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.icon *{
+    z-index: -1;
+    position: relative;
+}
+
 $primary: #6155a6;
 $secondary: #1a6ca3;
 $red: #cc184b;
@@ -19,3 +24,4 @@ $black: rgb(49, 49, 49);
 @import "./Styles/Build.scss";
 @import "./Styles/AddElement.scss";
 @import "./Styles/buildStyleSection.scss";
+@import "./Styles/GetCode.scss";
