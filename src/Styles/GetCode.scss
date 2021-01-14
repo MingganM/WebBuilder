@@ -6,12 +6,23 @@
     .showCode{
         display: flex;
         justify-content: center;
+        flex-direction: column;
+        @media screen and (min-width: 43.75em){
+            flex-direction: row;
+        }
+        width: 100%;
+        padding: 2rem;
 
         &__box{
-            flex: 0 0 calc(49% - 1rem);
+            flex: 0 1 calc(49% - 1rem);
             margin: 1rem;
+            width: 100%;
+            @media screen and (min-width: 43.75em){
+                width: 49%;
+            }
         }
         &__code{
+            word-wrap: break-word;
             background-color: $black;
             color: $white;
             padding: 1rem; 

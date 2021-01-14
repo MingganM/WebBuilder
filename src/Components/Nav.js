@@ -5,21 +5,27 @@ export default function Nav(){
     return (
     <nav className="nav">
         <ul className="nav__ul">
-            <li className="nav__li">
-                <Link className="nav__link" to="/">Home</Link>
-            </li>
+            <Link to="/" className="nav__logo">
+                <img src="./images/logo.png"/>
+            </Link>
 
-            <li className="nav__li">
-                <Link className="nav__link" to="/Build">Build</Link>
-            </li>
+            <div className="nav__ul--container">
+                <li className="nav__li">
+                    <Link className="nav__link" to="/">Home</Link>
+                </li>
 
-            <li className="nav__li">
-                <Link className="nav__link" to="/Docs">Docs</Link>
-            </li>
+                <li className="nav__li">
+                    <Link className="nav__link" to="/Build">Build</Link>
+                </li>
 
-            <li className="nav__li">
-                <Link className="nav__link" to="/GetCode">GetCode</Link>
-            </li>
+                <li className="nav__li">
+                    <Link className="nav__link" to="/Docs">Docs</Link>
+                </li>
+
+                <li className="nav__li">
+                    <Link className="nav__link" to="/GetCode">GetCode</Link>
+                </li>
+            </div>
         </ul>
     </nav>
     );

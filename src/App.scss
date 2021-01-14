@@ -11,11 +11,23 @@ body{
     z-index: -1;
     position: relative;
 }
-
+html{
+    font-size: 62.5%;
+    @media screen and (min-width: 40.625em){
+        font-size: 70%;
+    }
+    @media screen and (min-width: 62.5em){
+        font-size: 90%;
+    }
+    @media screen and (min-width: 75em){
+        font-size: 110%;
+    }
+}
 $primary: #6155a6;
-$secondary: #1a6ca3;
+$secondary: #1d1931;
+$tertiary: rgb(85, 16, 126);
+$background: #d8d5ea;
 $red: #cc184b;
-$linkColor: #3375cc;
 $white: #f8f8f8;
 $green: rgb(0, 172, 66);
 $black: rgb(49, 49, 49);
@@ -25,3 +37,4 @@ $black: rgb(49, 49, 49);
 @import "./Styles/AddElement.scss";
 @import "./Styles/buildStyleSection.scss";
 @import "./Styles/GetCode.scss";
+@import "./Styles/Home.scss";

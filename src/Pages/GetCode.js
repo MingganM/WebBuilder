@@ -90,7 +90,7 @@ function makeHTML(html){
 }
 
 function makeCss(styles){
-    let css = "";
+    let css = "*{margin:0;padding:0;box-sizing:border-box;}";
 
     Object.keys(styles).forEach(style => {
         css += style + " { ";

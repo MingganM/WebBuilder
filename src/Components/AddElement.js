@@ -27,11 +27,11 @@ export default function AddElement({createElement, show, close}) {
 
             <label htmlFor="elemClass" className="elemClass">
                 Element's Class:
-                <input type="text" id="elemClass" ref={elemClass}/>
+                <input required type="text" id="elemClass" ref={elemClass}/>
             </label>
             <label htmlFor="elemTag" className="elemTag">
                 Element's Tag:
-                <input type="text" id="elemTag" ref={elemTag}/>
+                <input required type="text" id="elemTag" ref={elemTag}/>
             </label>
             <label htmlFor="elemText" className="elemText">
                 Element's Text:

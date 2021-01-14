@@ -2,12 +2,28 @@
     background-color: $secondary;
 
     &__ul{
+        
+        @media screen and (min-width: 123.73em){
+            max-width: 1980px;
+            margin: auto;
+        }
+
         list-style-type: none;
         display: flex;
-        justify-content: center;
-    }
-    &__li{
+        align-items: center;
+        justify-content: space-between;
 
+        &--container{
+            display: flex;
+            justify-content: center;
+        }
+    }
+    &__logo{
+        display: block;
+        width: 6rem;
+        img{
+            width: 100%;
+        }
     }
     &__link{
         font-size: 1.2rem;

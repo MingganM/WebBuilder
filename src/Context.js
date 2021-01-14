@@ -11,42 +11,7 @@ export const AppConsumer = appContext.Consumer;
 export default class Context extends Component {
     state = {
         elemKey: 1000,
-        markup: [
-            {
-                class: `.c1`,
-                tag: 'h2',
-                text: 'h2',
-                key: 1000,
-                branch: "main",
-                children: [
-                    {
-                        class: `.c3`,
-                        tag: 'div',
-                        text: 'div',
-                        key: 1003,
-                        branch: ".c1",
-                        children: [
-                            {
-                                class: `.c4`,
-                                tag: 'div',
-                                text: 'div',
-                                key: 1004,
-                                branch: ".c1",
-                                children: []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                class: `.c2`,
-                tag: 'div',
-                text: 'div',
-                key: 1001,
-                branch: "main",
-                children: []
-            }
-        ],
+        markup: [],
         styles: {},
         cursorType: 'move',
         selectedClass: {
@@ -62,6 +27,35 @@ export default class Context extends Component {
                 cursorType: value
             });
         }
+    }
+
+    addAttribute = (propVal, realVal) => {
+        const { selectedClass: { classname, root }, markup } = this.state;
+        let parentElem;
+
+        if(root !== "main"){
+            let rootObj = findObjViaClass(markup, root);
+            parentElem = searchForClassParent(rootObj, classname);
+            parentElem.children.forEach(callback);
+        }
+        else {
+            parentElem = markup;
+            parentElem.forEach(callback);
+        }
+
+        function callback(obj){
+            if(obj.class === classname){
+                let newAttributesObj = {...obj.attributes};
+                newAttributesObj[propVal] = realVal;
+                
+                obj.attributes = newAttributesObj;
+            }
+        }
+        this.setState({
+            ...this.state,
+            markup: [...markup]
+        })
+
     }
 
     deleteElement = (e) => {
@@ -106,6 +100,7 @@ export default class Context extends Component {
             tag: elemTag,
             text: elemTag == "input" ? null : elemText,
             key: elemKey,
+            attributes: {},
             branch: "main",
             children: []
         }
@@ -246,7 +241,8 @@ export default class Context extends Component {
             handleGeneral: this.handleGeneral,
             handleStyleCheck: this.handleStyleCheck,
             handleNumberChange: this.handleNumberChange,
-            deleteElement: this.deleteElement
+            deleteElement: this.deleteElement,
+            addAttribute: this.addAttribute
         }
         
         return (

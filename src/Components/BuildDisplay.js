@@ -6,11 +6,13 @@ import { FaPlus,
 
 import { AppConsumer } from "../Context";
 import AddElement from "./AddElement";
+import AddAttribute from './AddAttribute';
 
 export default function BuildDisplay() {
    
     const myState = {
-        showCreationForm: false
+        showCreationForm: false,
+        showAttributeForm: false
     };
     const [state, setState] = useState(myState);
 
@@ -27,12 +29,26 @@ export default function BuildDisplay() {
             showCreationForm: false
         })
     }
+    function showAttributesForm(){
+        setState({
+            ...state,
+            showAttributeForm: true
+        });
+    }
+    function closeAttributesForm(e){
+        e.preventDefault();
+
+        setState({
+            ...state,
+            showAttributeForm: false
+        });
+    }
 
     return (
         <AppConsumer>
             {
                 value => {
-                    const {setCursor, createElement, deleteElement } = value;
+                    const {setCursor, createElement, deleteElement, addAttribute } = value;
 
                     return (
                         <div className="display">
@@ -52,6 +68,10 @@ export default function BuildDisplay() {
                                 <button data-value="move" className="display__operation">
                                     <FaArrowsAlt></FaArrowsAlt>
                                 </button>
+
+                                <button className="display__operation" onClick={showAttributesForm}>
+                                    Add Attribute
+                                </button>
                             </div>
                             
                             <div id="displayContainer" className="display__container">
@@ -61,6 +81,8 @@ export default function BuildDisplay() {
                             </div>
 
                             <AddElement createElement={createElement} close={closeCreationForm} show={state.showCreationForm}/>
+
+                            <AddAttribute addAttribute={addAttribute} close={closeAttributesForm} show={state.showAttributeForm}/>
                         </div>
                     )
                 }
@@ -79,10 +101,12 @@ export function displayElements(value, applyStyles){
             applyStyles ?
             {
                 style: {...styles[obj.class]},
-                key: obj.key
+                key: obj.key,
+                ...obj.attributes
             } : {
                key: obj.key,
-               class: obj.class.slice(1)
+               class: obj.class.slice(1),
+               ...obj.attributes
             }
         );
 
@@ -91,10 +115,12 @@ export function displayElements(value, applyStyles){
             applyStyles ?
             {
                 style: {...styles[obj.class]},
-                key: obj.key
+                key: obj.key,
+                ...obj.attributes
             } : {
                key: obj.key,
-               class: obj.class.slice(1)
+               class: obj.class.slice(1),
+               ...obj.attributes
             },
             obj.text,
             obj.children.length > 0 ? mapObjects(obj.children, createHTMLElement) : null

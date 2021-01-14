@@ -1,5 +1,9 @@
 .Build{
     display: flex;
+    flex-direction: column;
+    @media screen and (min-width: 43.75em){
+        flex-direction: row;
+    }
     height: 100vh;
 
     // IN COMMON:
@@ -31,6 +35,10 @@
     .markup{
         flex: 1.4;
         border-right: 1px solid grey;
+        border-bottom: 2px solid $black;
+        @media screen and (min-width: 43.75em){
+            border-bottom: none;
+        }
         
         &__preview{
             padding:0.2rem;
@@ -55,7 +63,10 @@
     }
     
     .display{
-        flex: 3;
+        flex: 2;
+        @media screen and (min-width: 43.75em){
+            flex: 3;
+        }
 
         &__operations{
             padding: 0.9rem 0.5rem;
@@ -91,6 +102,10 @@
     .buildStyle{
         flex: 1;
         border-left: 1px solid grey;
+        border-top: 2px solid $black;
+        @media screen and (min-width: 43.75em){
+            border-top: none;
+        }
 
         &__selectedClass{
             background-color: grey;
