@@ -30,7 +30,7 @@ export default class Context extends Component {
     }
 
     addAttribute = (propVal, realVal) => {
-        const { selectedClass: { classname, root }, markup } = this.state;
+        const { selectedClass: { classname, root }, markup, selectedClass } = this.state;
         let parentElem;
 
         if(selectedClass === "None") return;
