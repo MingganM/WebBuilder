@@ -11,6 +11,10 @@ export default function AddAttribute(props) {
         const {current: { value: realVal }} = elemValue;
         
         addAttribute(propVal, realVal);
+
+        elemProp.current.value = "";
+        elemValue.current.value = "";
+        
         close(e);
     }
 

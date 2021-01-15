@@ -1,0 +1,77 @@
+.docs{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    overflow: hidden;
+    flex-direction: column;
+    
+    @media screen and (min-width: 43.75em){
+        height: 100vh;
+        flex-direction: row;        
+    }
+    &__ul{
+        height: 100%;
+        padding: 1rem 0;
+        background-color: $secondary;
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: space-around;
+
+        @media screen and (min-width: 43.75em){
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+    }
+    &__li{
+        
+    }
+    &__link{
+        color: $white;
+        text-decoration: none;
+        font-size: 1.2rem;
+        padding: 1rem;
+        display: block;
+        &:hover{
+            background: $white;
+            color: $primary;
+        }
+    }
+    
+    &__container{
+        padding: 2rem;
+        flex: 1 1 auto;
+        
+    }
+
+    .singleDoc{
+        width: 100%;
+
+        &__title{
+            color: $primary;
+            font-size: 2.2rem;
+            margin: 2rem 0;
+        }
+        &__content{
+            padding: 1rem;
+        }
+        &__ul{
+            
+        }  
+        &__li{
+            // display: flex;
+            margin: 0.5rem 0;
+        }
+        &__span{
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin: 0 1rem;
+            & + p {
+                margin:0 2rem;
+            }
+        }
+        &__p{
+            font-size: 1.2rem;
+            margin: 0 1rem;
+        }
+    }
+}

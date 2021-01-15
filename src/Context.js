@@ -33,6 +33,8 @@ export default class Context extends Component {
         const { selectedClass: { classname, root }, markup } = this.state;
         let parentElem;
 
+        if(selectedClass === "None") return;
+
         if(root !== "main"){
             let rootObj = findObjViaClass(markup, root);
             parentElem = searchForClassParent(rootObj, classname);
